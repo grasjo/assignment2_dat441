@@ -34,9 +34,9 @@ class Agent(object):
             max_action = np.argmax(self.Q[self.state, :])
             for action in range(self.action_space):
                 if action == max_action:
-                    expected_q += (1 - self.epsilon + self.epsilon / self.action_space) * self.Q[self.state, prev_action]
+                    expected_q += (1 - self.epsilon + self.epsilon / self.action_space) * self.Q[self.state, action]
                 else:
-                    expected_q += (self.epsilon / self.action_space) * self.Q[self.state, prev_action]
+                    expected_q += (self.epsilon / self.action_space) * self.Q[self.state, action]
 
             self.Q[self.prev_state, self.prev_action] += self.alpha * (reward 
                 + self.gamma * expected_q - self.Q[self.prev_state, self.prev_action])
