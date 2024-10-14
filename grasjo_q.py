@@ -23,32 +23,24 @@ class Agent(object):
         self.alpha = 0.5
         self.gamma = 0.95
 
-        self.state = None
         self.prev_state = None
-        self.action = None
         self.prev_action = None
 
         
 
     def observe(self, observation, reward, done):
         if None not in (self.prev_action, self.prev_state): # only update Q(s_t,a_t) when s_{t+1} and a_{t+1} is available
-            if done: # handle edge-case where s_{t+1} is terminal
-                self.Q[self.prev_state, self.prev_action] += self.alpha*(reward - self.Q[self.prev_state, self.prev_action])
-                self.state = None
-                self.prev_state = None
-                self.action = None
-                self.prev_action = None
-            else:
-                self.Q[self.prev_state, self.prev_action] += self.alpha*(reward + self.gamma * np.max(self.Q[self.state, :]) 
-                                                                         - self.Q[self.prev_state, self.prev_action])
-
+            self.Q[self.prev_state, self.prev_action] += self.alpha*(reward + 
+                self.gamma * np.max(self.Q[observation, :]) 
+                - self.Q[self.prev_state, self.prev_action])
+        self.prev_state = observation
+        if done:
+            self.prev_state = None
+            self.prev_action = None
 
     def act(self, observation):
-        self.prev_state = self.state
-        self.prev_action = self.action
-        self.state = observation
         if np.random.random() < self.epsilon: # explore with epsilon-greedy
-            self.action = np.random.randint(self.action_space)
+            self.prev_action = np.random.randint(self.action_space)
         else:
-            self.action = np.argmax(self.Q[self.state,:])
-        return self.action
+            self.prev_action = np.argmax(self.Q[observation,:])
+        return self.prev_action

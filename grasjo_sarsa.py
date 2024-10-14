@@ -1,7 +1,7 @@
 import numpy as np
 
 class Agent(object):
-    """Agent based on sarsa learning"""
+    """Agent based on sarsa"""
     def __init__(self, state_space, action_space, terminal_states=None, init_strategy='zeros'):
         self.action_space = action_space
         self.state_space = state_space
