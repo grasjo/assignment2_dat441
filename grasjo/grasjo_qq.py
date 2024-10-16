@@ -37,7 +37,7 @@ class Agent(object):
             if np.random.random() < 0.5:
                 self.Q1[self.prev_state, self.prev_action] += self.alpha*(reward + 
                     self.gamma * self.Q2[observation, np.argmax(self.Q1[observation,:])]
-                    - self.Q1[self.prev_state, self.prev_action])
+                    - self.Q1[self.prev_state, self.prev_action]) 
             else:
                 self.Q2[self.prev_state, self.prev_action] += self.alpha*(reward + 
                     self.gamma * self.Q1[observation, np.argmax(self.Q2[observation,:])]
